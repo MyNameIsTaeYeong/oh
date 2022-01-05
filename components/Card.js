@@ -15,7 +15,6 @@ const CardName = styled.Text`
 `;
 
 const Card = ({ name }) => {
-  console.log(name);
   return (
     <Container>
       <CardName>{name}</CardName>
