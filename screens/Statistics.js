@@ -1,11 +1,12 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
+import ScreenContainer from "../components/ScreenContainer";
 
 const Statistics = () => {
   return (
-    <View>
-      <Text>통계</Text>
-    </View>
+    <ScreenContainer>
+      <Text>생각중</Text>
+    </ScreenContainer>
   );
 };
 

@@ -8,6 +8,8 @@ export const emotionsDB = [
   { id: 1, name: "기쁨", userId: 1 },
   { id: 2, name: "슬픔", userId: 1 },
   { id: 3, name: "분노", userId: 1 },
+  { id: 4, name: "즐거움", userId: 1 },
+  { id: 5, name: "우울", userId: 1 },
 ];
 
 //감정기록

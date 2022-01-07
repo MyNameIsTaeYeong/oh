@@ -5,29 +5,37 @@ import Card from "./Card";
 
 const Container = styled.View`
   padding: 15px;
+  align-items: center;
 `;
+
 const Title = styled.Text`
   margin-bottom: 10px;
   font-size: 20px;
+  font-weight: 600;
 `;
-const Hsepa = styled.View`
+
+const VSepa = styled.View`
+  height: 20px;
+`;
+
+const HSepa = styled.View`
   width: 10px;
 `;
 
-const HFlat = ({ title, data }) => {
+const Flat = ({ title, data, horizontal }) => {
   return (
     <Container>
-      <Title>{title}</Title>
+      {title ? <Title>{title}</Title> : null}
       <FlatList
         showsHorizontalScrollIndicator={false}
         data={data}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Card name={item.name} />}
-        horizontal
-        ItemSeparatorComponent={() => <Hsepa />}
+        renderItem={({ item }) => <Card name={item.name} id={item.id} />}
+        ItemSeparatorComponent={() => (horizontal ? <HSepa /> : <VSepa />)}
+        horizontal={horizontal}
       />
     </Container>
   );
 };
 
-export default HFlat;
+export default Flat;

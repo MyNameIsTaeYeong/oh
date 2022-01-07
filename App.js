@@ -5,12 +5,13 @@ import { StyleSheet, Text, View } from "react-native";
 import Tabs from "./navigations/Tabs";
 import RootNav from "./navigations/Root";
 import Login from "./screens/Login";
-import styled from "styled-components/native";
+import styled, { ThemeProvider } from "styled-components/native";
 import * as SplashScreen from "expo-splash-screen";
 import MMKVStorage from "react-native-mmkv-storage";
 import kakaoApi from "./kakaoApi";
 import store from "./store";
 import { Provider } from "react-redux";
+import { appTheme } from "./styled";
 
 const Container = styled.View`
   margin-top: 50px;
@@ -59,13 +60,17 @@ const App = () => {
 
   return isLogIn ? (
     <Provider store={store}>
-      <NavigationContainer>
-        <RootNav setIsLogIn={setIsLogIn} />
-      </NavigationContainer>
+      <ThemeProvider theme={appTheme}>
+        <NavigationContainer>
+          <RootNav setIsLogIn={setIsLogIn} />
+        </NavigationContainer>
+      </ThemeProvider>
     </Provider>
   ) : (
     <Provider store={store}>
-      <Login setIsLogIn={setIsLogIn} />
+      <ThemeProvider theme={appTheme}>
+        <Login setIsLogIn={setIsLogIn} />
+      </ThemeProvider>
     </Provider>
   );
 };

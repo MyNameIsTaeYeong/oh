@@ -1,9 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Text, View } from "react-native";
 import styled from "styled-components/native";
 
 const Container = styled.TouchableOpacity`
-  background-color: gray;
+  background-color: #ef8316;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
@@ -11,12 +11,25 @@ const Container = styled.TouchableOpacity`
 `;
 
 const CardName = styled.Text`
-  font-size: 30px;
+  font-size: 20px;
+  color: black;
 `;
 
-const Card = ({ name }) => {
+const Card = ({ name, id }) => {
+  const navigation = useNavigation();
+
+  const aa = () => {
+    navigation.navigate("Stacks", {
+      screen: "ModalScreen",
+    });
+  };
+
+  const apiCall = () => {
+    console.log("api호출");
+  };
+
   return (
-    <Container>
+    <Container onPress={aa}>
       <CardName>{name}</CardName>
     </Container>
   );
