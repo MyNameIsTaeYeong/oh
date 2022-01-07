@@ -14,13 +14,13 @@ const Home = () => {
         title={"감정 기록하기"}
         data={emotionsDB}
         horizontal={true}
-        where={"home"}
+        from={"home"}
       />
       <Flat
         title={"활동 기록하기"}
         data={activitiesDB}
         horizontal={true}
-        where={"home"}
+        from={"home"}
       />
 
       <Button title="test" onPress={aa}></Button>

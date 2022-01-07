@@ -16,7 +16,7 @@ const Emotion = () => {
 
   return (
     <ScreenContainer>
-      <Flat data={emotionsDB} />
+      <Flat data={emotionsDB} from="Emotion" />
       <Button title="추가" onPress={() => setVisible(true)}></Button>
       <DialogInput
         isDialogVisible={visible}

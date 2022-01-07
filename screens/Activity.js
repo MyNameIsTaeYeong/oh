@@ -16,7 +16,7 @@ const Activity = () => {
 
   return (
     <ScreenContainer>
-      <Flat data={activitiesDB} />
+      <Flat data={activitiesDB} from="Activity" />
       <Button title="추가" onPress={() => setVisible(true)}></Button>
       <DialogInput
         isDialogVisible={visible}

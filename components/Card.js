@@ -15,12 +15,17 @@ const CardName = styled.Text`
   color: black;
 `;
 
-const Card = ({ name, id }) => {
+const Card = ({ name, id, from }) => {
   const navigation = useNavigation();
 
-  const aa = () => {
+  const openModal = () => {
     navigation.navigate("Stacks", {
       screen: "ModalScreen",
+      params: {
+        id,
+        name,
+        from,
+      },
     });
   };
 
@@ -29,7 +34,7 @@ const Card = ({ name, id }) => {
   };
 
   return (
-    <Container onPress={aa}>
+    <Container onPress={from === "home" ? apiCall : openModal}>
       <CardName>{name}</CardName>
     </Container>
   );
