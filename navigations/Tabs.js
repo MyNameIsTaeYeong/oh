@@ -8,11 +8,13 @@ import {
   Feather,
   MaterialIcons,
   MaterialCommunityIcons,
+  Entypo,
 } from "@expo/vector-icons";
+import Etc from "../screens/Etc";
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => {
+const Tabs = ({ setIsLogIn }) => {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -48,6 +50,15 @@ const Tabs = () => {
               size={24}
               color="black"
             />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="기타"
+        children={() => <Etc setIsLogIn={setIsLogIn} />}
+        options={{
+          tabBarIcon: () => (
+            <Entypo name="dots-three-horizontal" size={24} color="black" />
           ),
         }}
       />

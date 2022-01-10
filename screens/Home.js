@@ -5,9 +5,6 @@ import ScreenContainer from "../components/ScreenContainer";
 import { activitiesDB, emotionsDB } from "../db";
 
 const Home = () => {
-  const aa = () => {
-    console.log(getParent());
-  };
   return (
     <ScreenContainer>
       <Flat
@@ -22,8 +19,6 @@ const Home = () => {
         horizontal={true}
         from={"home"}
       />
-
-      <Button title="test" onPress={aa}></Button>
     </ScreenContainer>
   );
 };
