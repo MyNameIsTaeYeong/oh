@@ -10,6 +10,7 @@ import kakaoApi from "./kakaoApi";
 import { appTheme } from "./styled";
 import { useSetRecoilState } from "recoil";
 import { userIdState } from "./state";
+import { getUsers } from "./api";
 
 const Oh = () => {
   const [isLogIn, setIsLogIn] = useState(false);
@@ -43,8 +44,11 @@ const Oh = () => {
     const kakaoCheck = await tokenCheck("kakaoToken");
     if (kakaoCheck) {
       const email = await kakaoApi.getProfile();
-      setUserId(email);
-      setIsLogIn(true);
+      const res = await getUsers(email);
+      if (res !== 500) {
+        setUserId(res.data);
+        setIsLogIn(true);
+      }
     }
   };
 

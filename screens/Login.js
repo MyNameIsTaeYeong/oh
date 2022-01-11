@@ -5,6 +5,7 @@ import kakaoApi from "../kakaoApi";
 import styled from "styled-components/native";
 import { useSetRecoilState } from "recoil";
 import { userIdState } from "../state";
+import { postUesers } from "../api";
 
 const Oh = styled.View`
   flex: 2;
@@ -47,9 +48,20 @@ const Login = ({ setIsLogIn }) => {
 
   const kakaoLogIn = async () => {
     await kakaoApi.signInWithKakao();
+
+    // 이미 회원가입이 되어있는지 체크하기.
+
     const email = await kakaoApi.getProfile();
-    setUserId(email);
-    setIsLogIn(true);
+
+    const res = await postUesers({ email: email });
+
+    if (res !== 500) {
+      setUserId(res.data);
+      setIsLogIn(true);
+    }
+    if (res === 500) {
+      Alert.alert("잠시후 다시 시도해주세요");
+    }
   };
 
   return (
