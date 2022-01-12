@@ -1,9 +1,8 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import RootNav from "./navigations/Root";
 import Login from "./screens/Login";
-import styled, { ThemeProvider } from "styled-components/native";
+import { ThemeProvider } from "styled-components/native";
 import * as SplashScreen from "expo-splash-screen";
 import MMKVStorage from "react-native-mmkv-storage";
 import kakaoApi from "./kakaoApi";

@@ -1,16 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from "./Tabs";
 import Stacks from "./Stacks";
-import ModalScreen from "../screens/ModalScreen";
-import { useRecoilValue } from "recoil";
-import { userIdState } from "../state";
 
 const Nav = createNativeStackNavigator();
 
 const RootNav = ({ setIsLogIn }) => {
-  const userId = useRecoilValue(userIdState);
-  console.log(userId);
   return (
     <Nav.Navigator
       screenOptions={{ presentation: "modal", headerShown: false }}

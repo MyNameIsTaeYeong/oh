@@ -9,9 +9,10 @@ export const userIdState = atom({
 
 export const emotionState = atom({
   key: "EmotionState",
-  default: selector({
-    key: "EmotionState/Default",
-    get: async ({ get }) =>
-      await axios.get(`${SERVER}/emotions/${get(userIdState)}`),
-  }),
+  default: [],
+});
+
+export const activityState = atom({
+  key: "activityState",
+  default: [],
 });

@@ -2,18 +2,60 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ModalScreen from "../screens/ModalScreen";
 import { Alert, Button, View } from "react-native";
-import DialogInput from "react-native-dialog-input";
+import axios from "axios";
+import { SERVER } from "../api";
+import { useRecoilState } from "recoil";
+import { activityState, emotionState } from "../state";
+import { go, filter } from "fxjs";
 
 const Stack = createNativeStackNavigator();
 
-const Stacks = ({ route }) => {
+const Stacks = ({ route, navigation }) => {
+  const [emotions, setEmotions] = useRecoilState(emotionState);
+  const [activities, setActivities] = useRecoilState(activityState);
+
+  const deleteApiCall = async () => {
+    const { name, id, from } = route.params.params;
+
+    if (from === "Emotion") {
+      const res = await axios.delete(`${SERVER}/emotions/${id}`);
+      return res.status;
+    } else {
+      const res = await axios.delete(`${SERVER}/activities/${id}`);
+      return res.status;
+    }
+  };
+
   const deleteCheck = () => {
-    Alert.alert("Alert Title", "My Alert Msg", [
+    const { name, id, from } = route.params.params;
+    Alert.alert(name, `${name}을 삭제하시겠습니까?`, [
       {
         text: "Cancel",
         onPress: () => console.log("Cancel Pressed"),
       },
-      { text: "OK", onPress: () => console.log("OK Pressed") },
+      {
+        text: "OK",
+        onPress: async () => {
+          const status = await deleteApiCall();
+          if (status === 200) {
+            Alert.alert("삭제되었습니다.");
+            navigation.goBack();
+            from === "Emotion"
+              ? go(
+                  emotions,
+                  filter((emotion) => emotion.id != id),
+                  setEmotions
+                )
+              : go(
+                  activities,
+                  filter((activity) => activity.id != id),
+                  setActivities
+                );
+          } else {
+            Alert.alert("잠시 후 다시 시도해주세요.");
+          }
+        },
+      },
     ]);
   };
 
