@@ -11,7 +11,7 @@ const Container = styled.View`
 const Loader = () => {
   return (
     <Container>
-      <ActivityIndicator size="large" />
+      <ActivityIndicator size="large" color="black" />
     </Container>
   );
 };

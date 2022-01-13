@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const SERVER = "http://172.16.100.46:4000";
+export const SERVER = "http://172.30.1.38:4000";
 
 // GET /users/{email} : email에 해당하는 유저아이디 조회.
 export const getUsers = async (email) => {

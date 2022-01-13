@@ -26,13 +26,13 @@ const Home = () => {
         title={"감정 기록하기"}
         data={emotions}
         horizontal={true}
-        from={"home"}
+        from={"homeEmo"}
       />
       <Flat
         title={"활동 기록하기"}
         data={activities}
         horizontal={true}
-        from={"home"}
+        from={"homeAct"}
       />
     </ScreenContainer>
   );
