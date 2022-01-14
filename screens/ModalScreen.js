@@ -10,34 +10,75 @@ import { userIdState } from "../state";
 import { SERVER } from "../api";
 import { go, map } from "fxjs";
 
+const Title = styled.Text`
+  margin: 20px;
+  font-size: 15px;
+`;
+
 const ModalScreen = ({ route: { params } }) => {
   // server/EmoOccurrences/{userId}/ActOccurrences POST 호출
   // params.id, params.name, params.from
 
   const [isLoading, setIsLoading] = useState(true);
-  const [data1, setData1] = useState([]);
   const userId = useRecoilValue(userIdState);
+  const [emotionData, setEmotionData] = useState([]);
+  const [activityData, setActivityData] = useState([]);
 
-  useEffect(async () => {
-    const res = await axios.post(
-      `${SERVER}/EmoOccurrences/${userId}/ActOccurrences`,
-      {
-        emotionName: params.name,
+  const apiCall = async (url, body) => {
+    try {
+      const res = await axios.post(url, body);
+      if (res.status === 200) {
+        return res;
+      } else {
+        return 500;
       }
-    );
-    go(
-      res.data[0],
-      map((obj) => {
-        return {
-          x: obj.name,
-          y: obj.cnt,
-        };
-      }),
-      setData1
-    );
+    } catch (error) {
+      console.log(error);
+      return 500;
+    }
+  };
 
-    setIsLoading(false);
-    //console.log(res.data[0]);
+  // from = "Emotion" or from = "Activity"
+  useEffect(async () => {
+    let url, body;
+    if (params.from === "Emotion") {
+      url = `${SERVER}/EmoOccurrences/${userId}/ActOccurrences`;
+      body = {
+        emotionName: params.name,
+      };
+    } else {
+      url = `${SERVER}/ActOccurrences/${userId}/EmoOccurrences`;
+      body = {
+        activityName: params.name,
+      };
+    }
+
+    const res = await apiCall(url, body);
+    console.log(res);
+    if (res.status === 200) {
+      go(
+        res.data[0],
+        map((obj) => {
+          return {
+            x: obj.name,
+            y: obj.cnt,
+          };
+        }),
+        setEmotionData
+      );
+
+      go(
+        res.data[1],
+        map((obj) => {
+          return {
+            x: obj.name,
+            y: obj.cnt,
+          };
+        }),
+        setActivityData
+      );
+      setIsLoading(false);
+    }
   }, []);
 
   // const generateColor = () => {
@@ -53,10 +94,10 @@ const ModalScreen = ({ route: { params } }) => {
         <Loader />
       ) : (
         <ScrollView>
-          <View style={{ justifyContent: "center" }}>
+          <View style={{ alignItems: "center" }}>
             <VictoryPie
               animate={{ easing: "exp" }}
-              data={data1}
+              data={emotionData}
               innerRadius={20}
               style={{
                 data: {
@@ -69,6 +110,23 @@ const ModalScreen = ({ route: { params } }) => {
                 },
               }}
             />
+            <Title>{params.name}(와)과 같은날 발생했던 감정</Title>
+            <VictoryPie
+              animate={{ easing: "exp" }}
+              data={activityData}
+              innerRadius={20}
+              style={{
+                data: {
+                  fillOpacity: 0.9,
+                  stroke: "#fff",
+                  strokeWidth: 2,
+                },
+                labels: {
+                  fill: "#212121",
+                },
+              }}
+            />
+            <Title>{params.name}(와)과 같은날 발생했던 활동</Title>
           </View>
         </ScrollView>
       )}
