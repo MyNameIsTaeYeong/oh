@@ -15,6 +15,7 @@
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
 #import <RNKakaoLogins.h>
+#import <NaverThirdPartyLogin/NaverThirdPartyLoginConnection.h>
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -46,6 +47,9 @@ static void InitializeFlipper(UIApplication *application) {
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
 
+  //[[NaverThirdPartyLoginConnection getSharedInstance] setIsNaverAppOauthEnable:YES];
+  //[[NaverThirdPartyLoginConnection getSharedInstance] setIsInAppOauthEnable:YES];
+
   return YES;
  }
 
@@ -65,6 +69,14 @@ static void InitializeFlipper(UIApplication *application) {
 
 // Linking API
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  // if([RNKakaoLogins isKakaoTalkLoginUrl:url]) {
+  //   return [RNKakaoLogins handleOpenUrl: url];
+  // }
+  
+//  if ([url.scheme isEqualToString:@"kldjakldqdj1d21"]) {
+//     return [[NaverThirdPartyLoginConnection getSharedInstance] application:application openURL:url options:options];
+//   }
+
   return [RCTLinkingManager application:application openURL:url options:options];
 }
 
@@ -75,14 +87,31 @@ static void InitializeFlipper(UIApplication *application) {
                      restorationHandler:restorationHandler];
 }
 
-//- (BOOL)application:(UIApplication *)app
+// - (BOOL)application:(UIApplication *)application
+//      openURL:(NSURL *)url
+//      options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options 
+//   {
+//      . . .
+   
+//      // for naver login
+//     if ([url.scheme isEqualToString:@"your_apps_urlscheme"]) {
+//       return [[NaverThirdPartyLoginConnection getSharedInstance] application:application openURL:url options:options];
+//     }
+     
+//      . . .
+     
+//      return YES;
+//   }
+     
+
+// - (BOOL)application:(UIApplication *)app
 //     openURL:(NSURL *)url
 //     options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
 // if([RNKakaoLogins isKakaoTalkLoginUrl:url]) {
 //    return [RNKakaoLogins handleOpenUrl: url];
 // }
-//
+
 // return NO;
-//}
+// }
 
 @end

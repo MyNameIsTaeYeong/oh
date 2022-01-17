@@ -28,6 +28,14 @@
 				<string>kakao424aa6aecbee4633ee1738cdb559ab9e</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kldjakldqdj1d21</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
@@ -35,6 +43,8 @@
 	<string>424aa6aecbee4633ee1738cdb559ab9e</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+	   	<string>naversearchapp</string>
+     	<string>naversearchthirdlogin</string>
 		<string>kakaokompassauth</string>
 		<string>storykompassauth</string>
 		<string>kakaolink</string>

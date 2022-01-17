@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import ScreenContainer from "../components/ScreenContainer";
-import styled from "styled-components/native";
-import { VictoryPie } from "victory-native";
 import { ScrollView, View } from "react-native";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userIdState } from "../state";
 import { SERVER } from "../api";
 import { go, map } from "fxjs";
-
-const Title = styled.Text`
-  margin: 20px;
-  font-size: 15px;
-`;
+import PieChart from "../components/PieChart";
 
 const ModalScreen = ({ route: { params } }) => {
-  // server/EmoOccurrences/{userId}/ActOccurrences POST 호출
   // params.id, params.name, params.from
 
   const [isLoading, setIsLoading] = useState(true);
@@ -81,53 +74,14 @@ const ModalScreen = ({ route: { params } }) => {
     }
   }, []);
 
-  // const generateColor = () => {
-  //   const randomColor = Math.floor(Math.random() * 16777215)
-  //     .toString(16)
-  //     .padStart(6, "0");
-  //   return `#${randomColor}`;
-  // };
-
   return (
     <ScreenContainer>
       {isLoading ? (
         <Loader />
       ) : (
         <ScrollView>
-          <View style={{ alignItems: "center" }}>
-            <VictoryPie
-              animate={{ easing: "exp" }}
-              data={emotionData}
-              innerRadius={20}
-              style={{
-                data: {
-                  fillOpacity: 0.9,
-                  stroke: "#fff",
-                  strokeWidth: 2,
-                },
-                labels: {
-                  fill: "#212121",
-                },
-              }}
-            />
-            <Title>{params.name}(와)과 같은날 발생했던 감정</Title>
-            <VictoryPie
-              animate={{ easing: "exp" }}
-              data={activityData}
-              innerRadius={20}
-              style={{
-                data: {
-                  fillOpacity: 0.9,
-                  stroke: "#fff",
-                  strokeWidth: 2,
-                },
-                labels: {
-                  fill: "#212121",
-                },
-              }}
-            />
-            <Title>{params.name}(와)과 같은날 발생했던 활동</Title>
-          </View>
+          <PieChart data={emotionData} title={params.name} />
+          <PieChart data={activityData} title={params.name} />
         </ScrollView>
       )}
     </ScreenContainer>
