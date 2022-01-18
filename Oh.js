@@ -10,6 +10,7 @@ import { appTheme } from "./styled";
 import { useSetRecoilState } from "recoil";
 import { userIdState } from "./state";
 import { getUsers } from "./api";
+import { getProfile } from "@react-native-seoul/naver-login";
 
 const Oh = () => {
   const [isLogIn, setIsLogIn] = useState(false);
@@ -47,6 +48,18 @@ const Oh = () => {
       if (res !== 500) {
         setUserId(res.data);
         setIsLogIn(true);
+      }
+    } else {
+      const naverToken = await MMKV.getMapAsync("naverToken");
+      if (naverToken) {
+        const {
+          response: { email },
+        } = await getProfile(naverToken.accessToken);
+        const res = await getUsers(email);
+        if (res !== 500) {
+          setUserId(res.data);
+          setIsLogIn(true);
+        }
       }
     }
   };

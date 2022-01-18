@@ -25,7 +25,6 @@ const kakaoApi = {
   },
   kakaoLogOut: async () => {
     const response = await logout();
-    await MMKV.removeItem("kakaoToken");
     console.log(response);
   },
   unlinkKakao: async (): Promise<void> => {
