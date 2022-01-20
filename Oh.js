@@ -51,6 +51,7 @@ const Oh = () => {
       }
     } else {
       const naverToken = await MMKV.getMapAsync("naverToken");
+      console.log(naverToken);
       if (naverToken) {
         const {
           response: { email },
