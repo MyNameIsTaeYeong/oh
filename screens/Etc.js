@@ -2,25 +2,23 @@ import React from "react";
 import ScreenContainer from "../components/ScreenContainer";
 import styled from "styled-components/native";
 import kakaoApi from "../kakaoApi";
-import MMKVStorage from "react-native-mmkv-storage";
 import { NaverLogin } from "@react-native-seoul/naver-login";
+import * as SecureStore from "expo-secure-store";
 
 const Body = styled.View``;
 
 const LogOutBtn = styled.Button``;
 
 const Etc = ({ setIsLogIn }) => {
-  const MMKV = new MMKVStorage.Loader().initialize();
-
   const logOut = async () => {
-    let token = await MMKV.getMapAsync("kakaoToken");
+    let token = await SecureStore.getItemAsync("kakaoToken");
     if (token != null) {
       await kakaoApi.kakaoLogOut();
-      MMKV.removeItem("kakaoToken");
+      await SecureStore.deleteItemAsync("kakaoToken");
       setIsLogIn(false);
     } else {
       NaverLogin.logout();
-      MMKV.removeItem("naverToken");
+      await SecureStore.deleteItemAsync("naverToken");
       setIsLogIn(false);
     }
   };

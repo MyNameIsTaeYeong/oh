@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import ScreenContainer from "../components/ScreenContainer";
 import kakaoApi from "../kakaoApi";
 import styled from "styled-components/native";
@@ -7,7 +7,7 @@ import { useSetRecoilState } from "recoil";
 import { userIdState } from "../state";
 import { postUesers } from "../api";
 import { NaverLogin, getProfile } from "@react-native-seoul/naver-login";
-import MMKVStorage from "react-native-mmkv-storage";
+import * as SecureStore from "expo-secure-store";
 
 const Oh = styled.View`
   flex: 2;
@@ -45,8 +45,6 @@ const Footer = styled.View`
   flex: 1;
 `;
 
-const MMKV = new MMKVStorage.Loader().initialize();
-
 const Login = ({ setIsLogIn }) => {
   const setUserId = useSetRecoilState(userIdState);
 
@@ -57,25 +55,34 @@ const Login = ({ setIsLogIn }) => {
     kServiceAppUrlScheme: "kldjakldqdj1d21",
   };
 
+  const androidKeys = {
+    kConsumerKey: "1SXbQgDD2hsM6zjF1XMG",
+    kConsumerSecret: "jaIW4fouG1",
+    kServiceAppName: "oh(iOS)",
+  };
+
   const naverLogin = () => {
-    NaverLogin.login(iosKeys, async (err, token) => {
-      if (err) {
-        console.log(err);
-        return;
+    NaverLogin.login(
+      Platform.OS === "ios" ? iosKeys : androidKeys,
+      async (err, token) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        await SecureStore.setItemAsync("naverToken", token.accessToken);
+        const {
+          response: { email },
+        } = await getProfile(token.accessToken);
+        const res = await postUesers({ email });
+        if (res !== 500) {
+          setUserId(res.data);
+          setIsLogIn(true);
+        }
+        if (res === 500) {
+          Alert.alert("잠시후 다시 시도해주세요");
+        }
       }
-      await MMKV.setMapAsync("naverToken", token);
-      const {
-        response: { email },
-      } = await getProfile(token.accessToken);
-      const res = await postUesers({ email });
-      if (res !== 500) {
-        setUserId(res.data);
-        setIsLogIn(true);
-      }
-      if (res === 500) {
-        Alert.alert("잠시후 다시 시도해주세요");
-      }
-    });
+    );
   };
 
   const kakaoLogIn = async () => {

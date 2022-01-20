@@ -7,14 +7,12 @@ import {
   logout,
   unlink,
 } from "@react-native-seoul/kakao-login";
-import MMKVStorage from "react-native-mmkv-storage";
-
-const MMKV = new MMKVStorage.Loader().initialize();
+import * as SecureStore from "expo-secure-store";
 
 const kakaoApi = {
   signInWithKakao: async (): Promise<void> => {
     const token: KakaoOAuthToken = await KakaoLogin();
-    await MMKV.setMapAsync("kakaoToken", token);
+    await SecureStore.setItemAsync("kakaoToken", token.accessToken);
   },
   signOutWithKakao: async (): Promise<void> => {
     const message = await logout();

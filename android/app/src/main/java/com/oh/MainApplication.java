@@ -10,7 +10,6 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.ammarahmed.mmkv.RNMMKVJSIModulePackage;
 import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.soloader.SoLoader;
 
@@ -31,13 +30,10 @@ public class MainApplication extends Application implements ReactApplication {
       return BuildConfig.DEBUG;
     }
 
-    @Override
-    protected JSIModulePackage getJSIModulePackage() {
-            return new RNMMKVJSIModulePackage();
-        }
 
-        @Override
-        protected List<ReactPackage> getPackages() {
+
+    @Override
+      protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // Packages that cannot be autolinked yet can be added manually here, for example:
@@ -48,12 +44,6 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected String getJSMainModuleName() {
       return "index";
-    }
-
-    // add this method to load our JSI Module.
-    @Override
-    protected JSIModulePackage getJSIModulePackage() {
-      return new RNMMKVJSIModulePackage();
     }
 
   });

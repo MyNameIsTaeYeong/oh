@@ -4,44 +4,42 @@ import RootNav from "./navigations/Root";
 import Login from "./screens/Login";
 import { ThemeProvider } from "styled-components/native";
 import * as SplashScreen from "expo-splash-screen";
-import MMKVStorage from "react-native-mmkv-storage";
 import kakaoApi from "./kakaoApi";
 import { appTheme } from "./styled";
 import { useSetRecoilState } from "recoil";
 import { userIdState } from "./state";
 import { getUsers } from "./api";
 import { getProfile } from "@react-native-seoul/naver-login";
+import * as SecureStore from "expo-secure-store";
 
 const Oh = () => {
   const [isLogIn, setIsLogIn] = useState(false);
   const setUserId = useSetRecoilState(userIdState);
 
-  const MMKV = new MMKVStorage.Loader().initialize();
+  // const tokenCheck = async (name) => {
+  //   const kakaoToken = await SecureStore.getItemAsync(name);
+  //   if (!kakaoToken || !kakaoToken.refreshTokenExpiresAt) {
+  //     return false;
+  //   }
+  //   const currentDateTime = new Date(
+  //     Date.now() - new Date().getTimezoneOffset() * 60000
+  //   )
+  //     .toISOString()
+  //     .replace("T", " ")
+  //     .substring(0, 19);
 
-  const tokenCheck = async (name) => {
-    const kakaoToken = await MMKV.getMapAsync(name);
-    if (!kakaoToken || !kakaoToken.refreshTokenExpiresAt) {
-      return false;
-    }
-    const currentDateTime = new Date(
-      Date.now() - new Date().getTimezoneOffset() * 60000
-    )
-      .toISOString()
-      .replace("T", " ")
-      .substring(0, 19);
+  //   // 토큰만료 체크
+  //   if (currentDateTime >= kakaoToken.refreshTokenExpiresAt) {
+  //     return false;
+  //   }
 
-    // 토큰만료 체크
-    if (currentDateTime >= kakaoToken.refreshTokenExpiresAt) {
-      return false;
-    }
-
-    return true;
-  };
+  //   return true;
+  // };
 
   const prepare = async () => {
     await SplashScreen.preventAutoHideAsync();
 
-    const kakaoCheck = await tokenCheck("kakaoToken");
+    const kakaoCheck = await SecureStore.getItemAsync("kakaoToken");
     if (kakaoCheck) {
       const email = await kakaoApi.getProfile();
       const res = await getUsers(email);
@@ -50,12 +48,12 @@ const Oh = () => {
         setIsLogIn(true);
       }
     } else {
-      const naverToken = await MMKV.getMapAsync("naverToken");
+      const naverToken = await SecureStore.getItemAsync("naverToken");
       console.log(naverToken);
       if (naverToken) {
         const {
           response: { email },
-        } = await getProfile(naverToken.accessToken);
+        } = await getProfile(naverToken);
         const res = await getUsers(email);
         if (res !== 500) {
           setUserId(res.data);
