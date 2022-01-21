@@ -11,7 +11,7 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const PieChart = ({ data, title }) => {
+const PieChart = ({ data, title, subTitle }) => {
   return (
     <Container>
       <VictoryPie
@@ -30,7 +30,9 @@ const PieChart = ({ data, title }) => {
           },
         }}
       />
-      <Title>{title}(와)과 같은날 발생했던 감정</Title>
+      <Title>
+        {title}(와)과 같은날 발생했던 {subTitle}
+      </Title>
     </Container>
   );
 };

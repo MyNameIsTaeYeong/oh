@@ -47,7 +47,6 @@ const ModalScreen = ({ route: { params } }) => {
     }
 
     const res = await apiCall(url, body);
-    console.log(res);
     if (res.status === 200) {
       go(
         res.data[0],
@@ -80,8 +79,8 @@ const ModalScreen = ({ route: { params } }) => {
         <Loader />
       ) : (
         <ScrollView>
-          <PieChart data={emotionData} title={params.name} />
-          <PieChart data={activityData} title={params.name} />
+          <PieChart data={emotionData} title={params.name} subTitle={"감정"} />
+          <PieChart data={activityData} title={params.name} subTitle={"활동"} />
         </ScrollView>
       )}
     </ScreenContainer>
