@@ -1,6 +1,4 @@
-import axios from "axios";
-import { atom, selector } from "recoil";
-import { SERVER } from "./api";
+import { atom } from "recoil";
 
 export const userIdState = atom({
   key: "userIdState",

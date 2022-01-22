@@ -3,9 +3,7 @@
     "name": "oh",
     "slug": "oh",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.oh"
     }

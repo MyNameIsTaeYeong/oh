@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { SERVER } from "../api";
 import Flat from "../components/Flat";
+import Loader from "../components/Loader";
 import ScreenContainer from "../components/ScreenContainer";
 import { activityState, emotionState, userIdState } from "../state";
 
@@ -10,6 +11,7 @@ const Home = () => {
   const userId = useRecoilValue(userIdState);
   const [emotions, setEmotions] = useRecoilState(emotionState);
   const [activities, setActivities] = useRecoilState(activityState);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(async () => {
     const res = await Promise.all([
@@ -18,9 +20,12 @@ const Home = () => {
     ]);
     setEmotions(res[0].data);
     setActivities(res[1].data);
+    setIsLoading(false);
   }, []);
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <ScreenContainer>
       <Flat
         title={"감정 기록하기"}
