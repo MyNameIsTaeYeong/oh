@@ -6,6 +6,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.oh"
+    },
+    "android": {
+      "package": "com.oh",
+      "versionCode": 2
     }
   },
   "name": "oh"
