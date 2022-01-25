@@ -4,9 +4,7 @@
     "slug": "oh",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "bundleIdentifier": "com.oh"
-    },
+    "icon": "./icon.png",
     "android": {
       "package": "com.oh",
       "versionCode": 2
