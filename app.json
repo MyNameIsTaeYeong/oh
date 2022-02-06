@@ -1,13 +1,16 @@
 {
   "expo": {
-    "name": "oh",
+    "name": "oh!",
     "slug": "oh",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
     "icon": "./icon.png",
     "android": {
       "package": "com.oh",
-      "versionCode": 2
+      "versionCode": 3
+    },
+    "ios": {
+      "bundleIdentifier": "com.oh"
     }
   },
   "name": "oh"

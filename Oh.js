@@ -39,6 +39,9 @@ const Oh = () => {
   const prepare = async () => {
     await SplashScreen.preventAutoHideAsync();
 
+    // await SecureStore.deleteItemAsync("naverToken");
+    // await SecureStore.deleteItemAsync("kakaoToken");
+
     const kakaoCheck = await SecureStore.getItemAsync("kakaoToken");
     if (kakaoCheck) {
       const email = await kakaoApi.getProfile();

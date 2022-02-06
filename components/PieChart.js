@@ -3,7 +3,6 @@ import { VictoryPie } from "victory-native";
 import styled from "styled-components/native";
 
 const Title = styled.Text`
-  margin: 20px;
   font-size: 15px;
 `;
 
