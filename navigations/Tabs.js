@@ -1,16 +1,16 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "../screens/Home";
-import Statistics from "../screens/Statistics";
-import Emotion from "../screens/Emotion";
-import Activity from "../screens/Activity";
+import Home from "../pages/Home";
+import Statistics from "../pages/Statistics";
+import Emotion from "../pages/Emotion";
+import Activity from "../pages/Activity";
 import {
   Feather,
   MaterialIcons,
   MaterialCommunityIcons,
   Entypo,
 } from "@expo/vector-icons";
-import Etc from "../screens/Etc";
+import Etc from "../pages/Etc";
 
 const Tab = createBottomTabNavigator();
 

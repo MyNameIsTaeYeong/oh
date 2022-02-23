@@ -1,6 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ModalScreen from "../screens/ModalScreen";
+import ModalScreen from "../pages/ModalScreen";
 import { Alert, Button, View } from "react-native";
 import axios from "axios";
 import { SERVER } from "../api";

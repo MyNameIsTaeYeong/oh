@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import RootNav from "./navigations/Root";
-import Login from "./screens/Login";
+import Login from "./pages/Login";
 import { ThemeProvider } from "styled-components/native";
 import * as SplashScreen from "expo-splash-screen";
 import kakaoApi from "./kakaoApi";
 import { appTheme } from "./styled";
 import { useSetRecoilState } from "recoil";
-import { userIdState } from "./state";
+import { userEmailState, userIdState } from "./state";
 import { getUsers } from "./api";
 import { getProfile } from "@react-native-seoul/naver-login";
 import * as SecureStore from "expo-secure-store";
@@ -15,6 +15,7 @@ import * as SecureStore from "expo-secure-store";
 const Oh = () => {
   const [isLogIn, setIsLogIn] = useState(false);
   const setUserId = useSetRecoilState(userIdState);
+  const setUserEmail = useSetRecoilState(userEmailState);
 
   // const tokenCheck = async (name) => {
   //   const kakaoToken = await SecureStore.getItemAsync(name);
@@ -48,11 +49,12 @@ const Oh = () => {
       const res = await getUsers(email);
       if (res !== 500) {
         setUserId(res.data);
+        setUserEmail(email);
         setIsLogIn(true);
       }
     } else {
       const naverToken = await SecureStore.getItemAsync("naverToken");
-      console.log(naverToken);
+
       if (naverToken) {
         const {
           response: { email },
@@ -60,6 +62,7 @@ const Oh = () => {
         const res = await getUsers(email);
         if (res !== 500) {
           setUserId(res.data);
+          setUserEmail(email);
           setIsLogIn(true);
         }
       }

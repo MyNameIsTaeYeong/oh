@@ -1,7 +1,5 @@
 import axios from "axios";
-
-export const SERVER =
-  "http://ec2-13-125-249-106.ap-northeast-2.compute.amazonaws.com:4000";
+import { SERVER } from "@env";
 
 // GET /users/{email} : email에 해당하는 유저아이디 조회.
 export const getUsers = async (email) => {
@@ -19,7 +17,7 @@ export const getUsers = async (email) => {
 };
 
 // POST /users : 유저 생성.
-export const postUesers = async (body) => {
+export const postUsers = async (body) => {
   try {
     const res = await axios.post(`${SERVER}/users`, body);
 

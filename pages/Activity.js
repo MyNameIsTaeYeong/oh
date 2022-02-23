@@ -13,7 +13,7 @@ const Activity = () => {
   const [activities, setActivities] = useRecoilState(activityState);
   const userId = useRecoilValue(userIdState);
 
-  const addActivity = async (inputText) => {
+  const postActivities = async (inputText) => {
     const res = await axios.post(`${SERVER}/activities`, {
       name: inputText,
       userId,
@@ -37,7 +37,7 @@ const Activity = () => {
         message={`추가할 활동을 입력하세요.`}
         hintInput={"입력"}
         submitInput={(inputText) => {
-          addActivity(inputText);
+          postActivities(inputText);
         }}
         closeDialog={() => {
           setVisible(false);

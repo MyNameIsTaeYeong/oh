@@ -13,7 +13,7 @@ const Emotion = () => {
   const [emotions, setEmotions] = useRecoilState(emotionState);
   const userId = useRecoilValue(userIdState);
 
-  const addEmotion = async (inputText) => {
+  const postEmotions = async (inputText) => {
     const res = await axios.post(`${SERVER}/emotions`, {
       name: inputText,
       userId,
@@ -37,7 +37,7 @@ const Emotion = () => {
         message={`추가할 감정을 입력하세요.`}
         hintInput={"입력"}
         submitInput={(inputText) => {
-          addEmotion(inputText);
+          postEmotions(inputText);
         }}
         closeDialog={() => {
           setVisible(false);

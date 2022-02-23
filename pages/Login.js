@@ -4,10 +4,17 @@ import ScreenContainer from "../components/ScreenContainer";
 import kakaoApi from "../kakaoApi";
 import styled from "styled-components/native";
 import { useSetRecoilState } from "recoil";
-import { userIdState } from "../state";
-import { postUesers } from "../api";
+import { userEmailState, userIdState } from "../state";
+import { postUsers } from "../api";
 import { NaverLogin, getProfile } from "@react-native-seoul/naver-login";
 import * as SecureStore from "expo-secure-store";
+import {
+  NAVERIOSKEY,
+  NAVERIOSSECRET,
+  NAVERURLSCHEME,
+  NAVERANDROIDKEY,
+  NAVERANDROIDSECRET,
+} from "@env";
 
 const Oh = styled.View`
   flex: 2;
@@ -47,18 +54,19 @@ const Footer = styled.View`
 
 const Login = ({ setIsLogIn }) => {
   const setUserId = useSetRecoilState(userIdState);
+  const setUserEmail = useSetRecoilState(userEmailState);
 
   const iosKeys = {
-    kConsumerKey: "OP2iGuM15_BAy7ybzbvZ",
-    kConsumerSecret: "y3_xCfbSDk",
-    kServiceAppName: "oh(iOS)",
-    kServiceAppUrlScheme: "kldjakldqdj1d21",
+    kConsumerKey: NAVERIOSKEY,
+    kConsumerSecret: NAVERIOSSECRET,
+    kServiceAppName: "oh",
+    kServiceAppUrlScheme: NAVERURLSCHEME,
   };
 
   const androidKeys = {
-    kConsumerKey: "1SXbQgDD2hsM6zjF1XMG",
-    kConsumerSecret: "jaIW4fouG1",
-    kServiceAppName: "oh(iOS)",
+    kConsumerKey: NAVERANDROIDKEY,
+    kConsumerSecret: NAVERANDROIDSECRET,
+    kServiceAppName: "oh",
   };
 
   const naverLogin = () => {
@@ -69,13 +77,17 @@ const Login = ({ setIsLogIn }) => {
           console.log(err);
           return;
         }
+
+        console.log(token);
+
         await SecureStore.setItemAsync("naverToken", token.accessToken);
         const {
           response: { email },
         } = await getProfile(token.accessToken);
-        const res = await postUesers({ email });
+        const res = await postUsers({ email });
         if (res !== 500) {
           setUserId(res.data);
+          setUserEmail(email);
           setIsLogIn(true);
         }
         if (res === 500) {
@@ -92,7 +104,7 @@ const Login = ({ setIsLogIn }) => {
 
     const email = await kakaoApi.getProfile();
 
-    const res = await postUesers({ email });
+    const res = await postUsers({ email });
 
     if (res !== 500) {
       setUserId(res.data);

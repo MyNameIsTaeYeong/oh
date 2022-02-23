@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { SERVER } from "../api";
+import { SERVER } from "@env";
 import Flat from "../components/Flat";
 import Loader from "../components/Loader";
 import ScreenContainer from "../components/ScreenContainer";

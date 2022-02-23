@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import ScreenContainer from "../components/ScreenContainer";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userIdState } from "../state";
