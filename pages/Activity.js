@@ -19,7 +19,10 @@ const Activity = () => {
       userId,
     });
     if (res.status === 200) {
-      setActivities([...activities, { id: res.data, name: inputText, userId }]);
+      setActivities([
+        ...activities,
+        { id: res.data.insertId, name: inputText, userId },
+      ]);
       setVisible(false);
     }
     if (res.status === 500) {

@@ -49,7 +49,7 @@ const ModalScreen = ({ route: { params } }) => {
     const res = await apiCall(url, body);
     if (res.status === 200) {
       go(
-        res.data[0],
+        res.data[0].results,
         map((obj) => {
           return {
             x: obj.name,
@@ -60,7 +60,7 @@ const ModalScreen = ({ route: { params } }) => {
       );
 
       go(
-        res.data[1],
+        res.data[1].results,
         map((obj) => {
           return {
             x: obj.name,

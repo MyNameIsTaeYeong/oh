@@ -18,8 +18,8 @@ const Home = () => {
       axios.get(`${SERVER}/emotions/${userId}`),
       axios.get(`${SERVER}/activities/${userId}`),
     ]);
-    setEmotions(res[0].data);
-    setActivities(res[1].data);
+    setEmotions(res[0].data.results);
+    setActivities(res[1].data.results);
     setIsLoading(false);
   }, []);
 

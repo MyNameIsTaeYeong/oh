@@ -19,7 +19,10 @@ const Emotion = () => {
       userId,
     });
     if (res.status === 200) {
-      setEmotions([...emotions, { id: res.data, name: inputText, userId }]);
+      setEmotions([
+        ...emotions,
+        { id: res.data.insertId, name: inputText, userId },
+      ]);
       setVisible(false);
     }
     if (res.status === 500) {

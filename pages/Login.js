@@ -86,7 +86,7 @@ const Login = ({ setIsLogIn }) => {
         } = await getProfile(token.accessToken);
         const res = await postUsers({ email });
         if (res !== 500) {
-          setUserId(res.data);
+          setUserId(res.data.id);
           setUserEmail(email);
           setIsLogIn(true);
         }
@@ -107,7 +107,7 @@ const Login = ({ setIsLogIn }) => {
     const res = await postUsers({ email });
 
     if (res !== 500) {
-      setUserId(res.data);
+      setUserId(res.data.id);
       setIsLogIn(true);
     }
     if (res === 500) {
