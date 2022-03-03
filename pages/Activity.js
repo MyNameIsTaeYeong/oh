@@ -5,8 +5,7 @@ import { Button } from "react-native";
 import DialogInput from "react-native-dialog-input";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activityState, userIdState } from "../state";
-import axios from "axios";
-import { SERVER } from "../api";
+import { postSomething } from "../api";
 
 const Activity = () => {
   const [visible, setVisible] = useState(false);
@@ -14,10 +13,11 @@ const Activity = () => {
   const userId = useRecoilValue(userIdState);
 
   const postActivities = async (inputText) => {
-    const res = await axios.post(`${SERVER}/activities`, {
+    const res = await postSomething("activities", {
       name: inputText,
       userId,
     });
+
     if (res.status === 200) {
       setActivities([
         ...activities,

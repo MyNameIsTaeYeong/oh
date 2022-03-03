@@ -8,7 +8,7 @@ import kakaoApi from "./kakaoApi";
 import { appTheme } from "./styled";
 import { useSetRecoilState } from "recoil";
 import { userEmailState, userIdState } from "./state";
-import { getUsers } from "./api";
+import { getSomething, getUsers } from "./api";
 import { getProfile } from "@react-native-seoul/naver-login";
 import * as SecureStore from "expo-secure-store";
 
@@ -17,54 +17,23 @@ const Oh = () => {
   const setUserId = useSetRecoilState(userIdState);
   const setUserEmail = useSetRecoilState(userEmailState);
 
-  // const tokenCheck = async (name) => {
-  //   const kakaoToken = await SecureStore.getItemAsync(name);
-  //   if (!kakaoToken || !kakaoToken.refreshTokenExpiresAt) {
-  //     return false;
-  //   }
-  //   const currentDateTime = new Date(
-  //     Date.now() - new Date().getTimezoneOffset() * 60000
-  //   )
-  //     .toISOString()
-  //     .replace("T", " ")
-  //     .substring(0, 19);
-
-  //   // 토큰만료 체크
-  //   if (currentDateTime >= kakaoToken.refreshTokenExpiresAt) {
-  //     return false;
-  //   }
-
-  //   return true;
-  // };
-
   const prepare = async () => {
     await SplashScreen.preventAutoHideAsync();
 
     // await SecureStore.deleteItemAsync("naverToken");
     // await SecureStore.deleteItemAsync("kakaoToken");
 
-    const kakaoCheck = await SecureStore.getItemAsync("kakaoToken");
-    if (kakaoCheck) {
-      const email = await kakaoApi.getProfile();
+    const kakaoToken = await SecureStore.getItemAsync("kakaoToken");
+    const naverToken = await SecureStore.getItemAsync("naverToken");
+    if (kakaoToken || naverToken) {
+      const email = kakaoToken
+        ? await kakaoApi.getProfile()
+        : (await getProfile(naverToken)).response.email;
       const res = await getUsers(email);
       if (res !== 500) {
-        setUserId(res.data);
+        setUserId(res.data.id);
         setUserEmail(email);
         setIsLogIn(true);
-      }
-    } else {
-      const naverToken = await SecureStore.getItemAsync("naverToken");
-
-      if (naverToken) {
-        const {
-          response: { email },
-        } = await getProfile(naverToken);
-        const res = await getUsers(email);
-        if (res !== 500) {
-          setUserId(res.data);
-          setUserEmail(email);
-          setIsLogIn(true);
-        }
       }
     }
   };

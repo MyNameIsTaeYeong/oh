@@ -5,8 +5,7 @@ import { Alert, Button } from "react-native";
 import DialogInput from "react-native-dialog-input";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { emotionState, userIdState } from "../state";
-import axios from "axios";
-import { SERVER } from "../api";
+import { postSomething } from "../api";
 
 const Emotion = () => {
   const [visible, setVisible] = useState(false);
@@ -14,10 +13,11 @@ const Emotion = () => {
   const userId = useRecoilValue(userIdState);
 
   const postEmotions = async (inputText) => {
-    const res = await axios.post(`${SERVER}/emotions`, {
+    const res = await postSomething("emotions", {
       name: inputText,
       userId,
     });
+
     if (res.status === 200) {
       setEmotions([
         ...emotions,

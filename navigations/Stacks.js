@@ -1,9 +1,8 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ModalScreen from "../pages/ModalScreen";
-import { Alert, Button, View } from "react-native";
-import axios from "axios";
-import { SERVER } from "../api";
+import { Alert, Button } from "react-native";
+import { deleteSomething } from "../api";
 import { useRecoilState } from "recoil";
 import { activityState, emotionState } from "../state";
 import { go, filter } from "fxjs";
@@ -18,10 +17,10 @@ const Stacks = ({ route, navigation }) => {
     const { name, id, from } = route.params.params;
 
     if (from === "Emotion") {
-      const res = await axios.delete(`${SERVER}/emotions/${id}`);
+      const res = await deleteSomething("emotions", id);
       return res.status;
     } else {
-      const res = await axios.delete(`${SERVER}/activities/${id}`);
+      const res = await deleteSomething("activities", id);
       return res.status;
     }
   };

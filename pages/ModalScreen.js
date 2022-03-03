@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import ScreenContainer from "../components/ScreenContainer";
 import { ScrollView } from "react-native";
-import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userIdState } from "../state";
-import { SERVER } from "../api";
+import { postSomething } from "../api";
 import { go, map } from "fxjs";
 import PieChart from "../components/PieChart";
 
@@ -17,9 +16,10 @@ const ModalScreen = ({ route: { params } }) => {
   const [emotionData, setEmotionData] = useState([]);
   const [activityData, setActivityData] = useState([]);
 
-  const apiCall = async (url, body) => {
+  const apiCall = async (resource, body) => {
     try {
-      const res = await axios.post(url, body);
+      const res = await postSomething(resource, body);
+
       if (res.status === 200) {
         return res;
       } else {
@@ -33,23 +33,23 @@ const ModalScreen = ({ route: { params } }) => {
 
   // from = "Emotion" or from = "Activity"
   useEffect(async () => {
-    let url, body;
+    let resource, body;
     if (params.from === "Emotion") {
-      url = `${SERVER}/EmoOccurrences/${userId}/ActOccurrences`;
+      resource = `EmoOccurrences/${userId}/ActOccurrences`;
       body = {
         emotionName: params.name,
       };
     } else {
-      url = `${SERVER}/ActOccurrences/${userId}/EmoOccurrences`;
+      resource = `ActOccurrences/${userId}/EmoOccurrences`;
       body = {
         activityName: params.name,
       };
     }
 
-    const res = await apiCall(url, body);
+    const res = await apiCall(resource, body);
     if (res.status === 200) {
       go(
-        res.data[0].results,
+        res.data.results[0],
         map((obj) => {
           return {
             x: obj.name,
@@ -60,7 +60,7 @@ const ModalScreen = ({ route: { params } }) => {
       );
 
       go(
-        res.data[1].results,
+        res.data.results[1],
         map((obj) => {
           return {
             x: obj.name,

@@ -78,8 +78,6 @@ const Login = ({ setIsLogIn }) => {
           return;
         }
 
-        console.log(token);
-
         await SecureStore.setItemAsync("naverToken", token.accessToken);
         const {
           response: { email },

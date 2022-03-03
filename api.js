@@ -1,27 +1,21 @@
 import axios from "axios";
 import { SERVER } from "@env";
+import * as SecureStore from "expo-secure-store";
+import kakaoApi from "./kakaoApi";
+import { NaverLogin } from "@react-native-seoul/naver-login";
 
-// GET /users/{email} : email에 해당하는 유저아이디 조회.
-export const getUsers = async (email) => {
-  try {
-    const res = await axios.get(`${SERVER}/users/${email}`);
-    if (res.status === 200) {
-      return res;
-    } else {
-      return 500;
-    }
-  } catch (error) {
-    console.log(error);
-    return 500;
-  }
-};
+axios.defaults.baseURL = SERVER;
 
 // POST /users : 유저 생성.
 export const postUsers = async (body) => {
   try {
-    const res = await axios.post(`${SERVER}/users`, body);
+    const res = await axios.post(`/users`, body);
 
     if (res.status === 200) {
+      const { accessToken, refreshToken } = res.data;
+      axios.defaults.headers["authorization"] = accessToken;
+      await SecureStore.setItemAsync("accessToken", accessToken);
+      await SecureStore.setItemAsync("refreshToken", refreshToken);
       return res;
     }
     if (res.status === 500) {
@@ -33,17 +27,109 @@ export const postUsers = async (body) => {
   }
 };
 
-// GET /emotions/{userId} : 감정 조회.
-// GET /activities/{userId} : 활동 조회.
-// GET /emooccurrences/{userId} : 감정 기록 조회.
-// GET /actoccurrences/{userId} : 활동 기록 조회.
+// GET /users/{email} : email에 해당하는 유저아이디 조회.
+export const getUsers = async (email) => {
+  try {
+    const res = await axios.get(`/users/${email}`);
+    if (res.status === 200) {
+      const { accessToken, refreshToken } = res.data;
+      axios.defaults.headers["authorization"] = accessToken;
+      await SecureStore.setItemAsync("accessToken", accessToken);
+      await SecureStore.setItemAsync("refreshToken", refreshToken);
+      return res;
+    } else {
+      return 500;
+    }
+  } catch (error) {
+    console.log(error);
+    return 500;
+  }
+};
 
-// POST /emotions : 감정 생성.
-// POST /activities : 활동 생성.
-// POST /emooccurrences : 감정 기록.
-// POST /actoccurrences : 활동 기록.
-// POST /EmoOccurrences/{userId}/ActOccurrences : 감정과 활동의 관계보기.
-// DELETE /emotions/{id} : 감정 삭제.
-// DELETE /activities/{id} : 활동 삭제.
-// DELETE /emooccurrences/{id} : 감정 기록 삭제.
-// DELETE /actoccurrences/{id} : 활동 기록 삭제.
+// resource에서 identifier에 해당하는 레코드 조회
+export const getSomething = async (resource, identifier) => {
+  try {
+    const res = await axios.get(`/${resource}/${identifier}`);
+
+    if (res.data.code === 403) {
+      refreshToken = await SecureStore.getItemAsync("refreshToken");
+      axios.defaults.headers["authorization"] = refreshToken;
+      const res2 = await axios.get(`/${resource}/${identifier}`);
+
+      if (res2.data.code === 403) {
+        return "logOut";
+      }
+      const { accessToken } = res2.data;
+      axios.defaults.headers["authorization"] = accessToken;
+      await SecureStore.setItemAsync("accessToken", accessToken);
+      return res2;
+    }
+    return res;
+  } catch (error) {
+    console.log(error);
+    return 500;
+  }
+};
+
+// resource에 요청
+export const postSomething = async (resource, body) => {
+  try {
+    const res = await axios.post(`/${resource}`, body);
+
+    if (res.data.code === 403) {
+      refreshToken = await SecureStore.getItemAsync("refreshToken");
+      axios.defaults.headers["authorization"] = refreshToken;
+      const res2 = await axios.post(`/${resource}`, body);
+
+      if (res2.data.code === 403) {
+        return "logOut";
+      }
+      const { accessToken } = res2.data;
+      axios.defaults.headers["authorization"] = accessToken;
+      await SecureStore.setItemAsync("accessToken", accessToken);
+      return res2;
+    }
+    return res;
+  } catch (error) {
+    console.log(error);
+    return 500;
+  }
+};
+
+// resource에서 identifier에 해당하는 레코드 삭제
+export const deleteSomething = async (resource, identifier) => {
+  try {
+    const res = await axios.delete(`/${resource}/${identifier}`);
+
+    if (res.data.code === 403) {
+      refreshToken = await SecureStore.getItemAsync("refreshToken");
+      axios.defaults.headers["authorization"] = refreshToken;
+      const res2 = await axios.delete(`/${resource}/${identifier}`);
+
+      if (res2.data.code === 403) {
+        return "logOut";
+      }
+      const { accessToken } = res2.data;
+      axios.defaults.headers["authorization"] = accessToken;
+      await SecureStore.setItemAsync("accessToken", accessToken);
+      return res2;
+    }
+    return res;
+  } catch (error) {
+    console.log(error);
+    return 500;
+  }
+};
+
+export const logOut = async () => {
+  let token = await SecureStore.getItemAsync("kakaoToken");
+  if (token != null) {
+    await kakaoApi.kakaoLogOut();
+    await SecureStore.deleteItemAsync("kakaoToken");
+  } else {
+    NaverLogin.logout();
+    await SecureStore.deleteItemAsync("naverToken");
+  }
+  await SecureStore.deleteItemAsync("accessToken");
+  await SecureStore.deleteItemAsync("refreshToken");
+};

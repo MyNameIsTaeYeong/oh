@@ -1,10 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components/native";
-import { SERVER } from "../api";
+import { postSomething } from "../api";
 import { userIdState } from "../state";
 import Loader from "./Loader";
 
@@ -42,12 +41,12 @@ const Card = ({ name, id, from }) => {
     setWaiting(true);
     let res;
     if (from === "homeEmo") {
-      res = await axios.post(`${SERVER}/emooccurrences`, {
+      res = await postSomething("EmoOccurrences", {
         emotionName: name,
         userId,
       });
     } else {
-      res = await axios.post(`${SERVER}/actoccurrences`, {
+      res = await postSomething("ActOccurrences", {
         activityName: name,
         userId,
       });

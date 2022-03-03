@@ -19,7 +19,7 @@ const Tabs = ({ setIsLogIn }) => {
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
-        component={Home}
+        children={() => <Home setIsLogIn={setIsLogIn} />}
         options={{
           tabBarIcon: () => <Feather name="home" size={24} color="black" />,
         }}
