@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Alert } from "react-native";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components/native";
-import { postSomething } from "../api";
+import { logOut, postSomething } from "../api";
 import { userIdState } from "../state";
 import Loader from "./Loader";
 
@@ -20,7 +20,7 @@ const CardName = styled.Text`
   color: black;
 `;
 
-const Card = ({ name, id, from }) => {
+const Card = ({ name, id, from, setIsLogIn }) => {
   const navigation = useNavigation();
   const [waiting, setWaiting] = useState(false);
   const userId = useRecoilValue(userIdState);
@@ -51,12 +51,17 @@ const Card = ({ name, id, from }) => {
         userId,
       });
     }
-    if (res.status === 200) {
-      Alert.alert("기록되었습니다!");
+    if (res === "logOut") {
+      logOut();
+      setIsLogIn(false);
     } else {
-      Alert.alert("잠시 후 다시 시도해주세요.");
+      if (res.status === 200) {
+        Alert.alert("기록되었습니다!");
+      } else {
+        Alert.alert("잠시 후 다시 시도해주세요.");
+      }
+      setWaiting(false);
     }
-    setWaiting(false);
   };
 
   return (

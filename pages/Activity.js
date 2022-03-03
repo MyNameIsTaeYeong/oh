@@ -5,9 +5,9 @@ import { Button } from "react-native";
 import DialogInput from "react-native-dialog-input";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activityState, userIdState } from "../state";
-import { postSomething } from "../api";
+import { logOut, postSomething } from "../api";
 
-const Activity = () => {
+const Activity = ({ setIsLogIn }) => {
   const [visible, setVisible] = useState(false);
   const [activities, setActivities] = useRecoilState(activityState);
   const userId = useRecoilValue(userIdState);
@@ -17,22 +17,26 @@ const Activity = () => {
       name: inputText,
       userId,
     });
-
-    if (res.status === 200) {
-      setActivities([
-        ...activities,
-        { id: res.data.insertId, name: inputText, userId },
-      ]);
-      setVisible(false);
-    }
-    if (res.status === 500) {
-      Alert.alert("잠시 후 다시 시도해주세요.");
+    if (res === "logOut") {
+      logOut();
+      setIsLogIn(false);
+    } else {
+      if (res.status === 200) {
+        setActivities([
+          ...activities,
+          { id: res.data.insertId, name: inputText, userId },
+        ]);
+        setVisible(false);
+      }
+      if (res.status === 500) {
+        Alert.alert("잠시 후 다시 시도해주세요.");
+      }
     }
   };
 
   return (
     <ScreenContainer>
-      <Flat data={activities} from="Activity" />
+      <Flat data={activities} from="Activity" setIsLogIn={setIsLogIn} />
       <Button title="추가" onPress={() => setVisible(true)}></Button>
       <DialogInput
         isDialogVisible={visible}

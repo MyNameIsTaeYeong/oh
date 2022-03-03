@@ -22,7 +22,7 @@ const HSepa = styled.View`
   width: 10px;
 `;
 
-const Flat = ({ title, data, horizontal, from }) => {
+const Flat = ({ title, data, horizontal, from, setIsLogIn }) => {
   return (
     <Container>
       {title ? <Title>{title}</Title> : null}
@@ -31,7 +31,12 @@ const Flat = ({ title, data, horizontal, from }) => {
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Card name={item.name} id={item.id} from={from} />
+          <Card
+            name={item.name}
+            id={item.id}
+            from={from}
+            setIsLogIn={setIsLogIn}
+          />
         )}
         ItemSeparatorComponent={() => (horizontal ? <HSepa /> : <VSepa />)}
         horizontal={horizontal}

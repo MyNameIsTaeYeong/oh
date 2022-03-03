@@ -26,7 +26,7 @@ const Tabs = ({ setIsLogIn }) => {
       />
       <Tab.Screen
         name="감정"
-        component={Emotion}
+        children={() => <Emotion setIsLogIn={setIsLogIn} />}
         options={{
           tabBarIcon: () => (
             <MaterialIcons name="insert-emoticon" size={24} color="black" />
@@ -35,7 +35,7 @@ const Tabs = ({ setIsLogIn }) => {
       />
       <Tab.Screen
         name="활동"
-        component={Activity}
+        children={() => <Activity setIsLogIn={setIsLogIn} />}
         options={{
           tabBarIcon: () => <Feather name="activity" size={24} color="black" />,
         }}

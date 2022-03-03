@@ -39,12 +39,14 @@ const Home = ({ setIsLogIn }) => {
         data={emotions}
         horizontal={true}
         from={"homeEmo"}
+        setIsLogIn={setIsLogIn}
       />
       <Flat
         title={"활동 기록하기"}
         data={activities}
         horizontal={true}
         from={"homeAct"}
+        setIsLogIn={setIsLogIn}
       />
     </ScreenContainer>
   );

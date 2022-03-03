@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ModalScreen from "../pages/ModalScreen";
 import { Alert, Button } from "react-native";
-import { deleteSomething } from "../api";
+import { deleteSomething, logOut } from "../api";
 import { useRecoilState } from "recoil";
 import { activityState, emotionState } from "../state";
 import { go, filter } from "fxjs";
@@ -12,18 +12,6 @@ const Stack = createNativeStackNavigator();
 const Stacks = ({ route, navigation }) => {
   const [emotions, setEmotions] = useRecoilState(emotionState);
   const [activities, setActivities] = useRecoilState(activityState);
-
-  const deleteApiCall = async () => {
-    const { name, id, from } = route.params.params;
-
-    if (from === "Emotion") {
-      const res = await deleteSomething("emotions", id);
-      return res.status;
-    } else {
-      const res = await deleteSomething("activities", id);
-      return res.status;
-    }
-  };
 
   const deleteCheck = () => {
     const { name, id, from } = route.params.params;
@@ -35,8 +23,9 @@ const Stacks = ({ route, navigation }) => {
       {
         text: "OK",
         onPress: async () => {
-          const status = await deleteApiCall();
-          if (status === 200) {
+          const resource = from === "Emotion" ? "emotions" : "activities";
+          const res = await deleteSomething(resource, id);
+          if (res.status === 200) {
             Alert.alert("삭제되었습니다.");
             navigation.goBack();
             from === "Emotion"
