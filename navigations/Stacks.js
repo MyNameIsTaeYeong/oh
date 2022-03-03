@@ -1,11 +1,12 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ModalScreen from "../pages/ModalScreen";
-import { Alert, Button } from "react-native";
-import { deleteSomething, logOut } from "../api";
+import { Alert } from "react-native";
+import { deleteSomething } from "../api";
 import { useRecoilState } from "recoil";
 import { activityState, emotionState } from "../state";
 import { go, filter } from "fxjs";
+import Btn from "../components/Btn";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,7 +54,9 @@ const Stacks = ({ route, navigation }) => {
         name="ModalScreen"
         component={ModalScreen}
         options={{
-          headerRight: () => <Button title="삭제" onPress={deleteCheck} />,
+          headerRight: () => (
+            <Btn title="해당 카드 삭제" whatToDo={deleteCheck} />
+          ),
         }}
       />
     </Stack.Navigator>

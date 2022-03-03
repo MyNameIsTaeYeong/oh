@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import ScreenContainer from "../components/ScreenContainer";
 import Flat from "../components/Flat";
-import { Button } from "react-native";
 import DialogInput from "react-native-dialog-input";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activityState, userIdState } from "../state";
 import { logOut, postSomething } from "../api";
+import Btn from "../components/Btn";
 
 const Activity = ({ setIsLogIn }) => {
   const [visible, setVisible] = useState(false);
@@ -37,7 +37,7 @@ const Activity = ({ setIsLogIn }) => {
   return (
     <ScreenContainer>
       <Flat data={activities} from="Activity" setIsLogIn={setIsLogIn} />
-      <Button title="추가" onPress={() => setVisible(true)}></Button>
+      <Btn title={"추가"} whatToDo={() => setVisible(true)} />
       <DialogInput
         isDialogVisible={visible}
         title={"활동"}

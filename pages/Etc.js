@@ -4,12 +4,11 @@ import styled from "styled-components/native";
 import { useRecoilValue } from "recoil";
 import { userEmailState } from "../state";
 import { logOut } from "../api";
+import Btn from "../components/Btn";
 
 const Body = styled.View``;
 
 const UserEmail = styled.Text``;
-
-const LogOutBtn = styled.Button``;
 
 const Etc = ({ setIsLogIn }) => {
   const email = useRecoilValue(userEmailState);
@@ -23,7 +22,7 @@ const Etc = ({ setIsLogIn }) => {
     <ScreenContainer>
       <Body>
         <UserEmail> email : {email}</UserEmail>
-        <LogOutBtn title="로그아웃" onPress={bye} />
+        <Btn title="로그아웃" whatToDo={bye} />
       </Body>
     </ScreenContainer>
   );

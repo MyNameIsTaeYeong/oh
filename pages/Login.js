@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Platform } from "react-native";
+import { Alert, Platform, Text } from "react-native";
 import ScreenContainer from "../components/ScreenContainer";
 import kakaoApi from "../kakaoApi";
 import styled from "styled-components/native";
@@ -26,7 +26,19 @@ const AppName = styled.Text`
   font-size: 50px;
 `;
 
-const Naver = styled.View`
+const NaverLoginText = styled.Text`
+  font-size: 20px;
+  opacity: 1;
+  color: white;
+`;
+
+const KakaoLoginText = styled.Text`
+  font-size: 20px;
+  opacity: 0.6;
+  color: black;
+`;
+
+const NaverLoginBtn = styled.TouchableOpacity`
   background-color: green;
   flex: 1;
   justify-content: center;
@@ -34,19 +46,13 @@ const Naver = styled.View`
   opacity: 0.9;
 `;
 
-const NaverLoginBtn = styled.Button`
-  background-color: green;
-`;
-
-const Kakao = styled.View`
+const KakaoLoginBtn = styled.TouchableOpacity`
   background-color: yellow;
   flex: 1;
   justify-content: center;
   align-items: center;
   opacity: 0.9;
 `;
-
-const KakaoLoginBtn = styled.Button``;
 
 const Footer = styled.View`
   flex: 1;
@@ -118,12 +124,15 @@ const Login = ({ setIsLogIn }) => {
       <Oh>
         <AppName>oh!</AppName>
       </Oh>
-      <Naver>
-        <NaverLoginBtn title="네이버로 로그인" onPress={naverLogin} />
-      </Naver>
-      <Kakao>
-        <KakaoLoginBtn title="카카오 로그인" onPress={kakaoLogIn} />
-      </Kakao>
+
+      <NaverLoginBtn title="네이버로 로그인" onPress={naverLogin}>
+        <NaverLoginText>네이버로 로그인</NaverLoginText>
+      </NaverLoginBtn>
+
+      <KakaoLoginBtn title="카카오 로그인" onPress={kakaoLogIn}>
+        <KakaoLoginText>카카오로 로그인</KakaoLoginText>
+      </KakaoLoginBtn>
+
       <Footer></Footer>
     </ScreenContainer>
   );
