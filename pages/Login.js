@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Platform, Text } from "react-native";
+import { Alert, Platform } from "react-native";
 import ScreenContainer from "../components/ScreenContainer";
 import kakaoApi from "../kakaoApi";
 import styled from "styled-components/native";
@@ -14,7 +14,7 @@ import {
   NAVERURLSCHEME,
   NAVERANDROIDKEY,
   NAVERANDROIDSECRET,
-} from "@env";
+} from "../envariable";
 
 const Oh = styled.View`
   flex: 2;

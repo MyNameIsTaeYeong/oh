@@ -8,7 +8,7 @@ import kakaoApi from "./kakaoApi";
 import { appTheme } from "./styled";
 import { useSetRecoilState } from "recoil";
 import { userEmailState, userIdState } from "./state";
-import { getSomething, getUsers } from "./api";
+import { getUsers, logOut } from "./api";
 import { getProfile } from "@react-native-seoul/naver-login";
 import * as SecureStore from "expo-secure-store";
 
@@ -22,19 +22,25 @@ const Oh = () => {
 
     // await SecureStore.deleteItemAsync("naverToken");
     // await SecureStore.deleteItemAsync("kakaoToken");
+    try {
+      const kakaoToken = await SecureStore.getItemAsync("kakaoToken");
+      const naverToken = await SecureStore.getItemAsync("naverToken");
 
-    const kakaoToken = await SecureStore.getItemAsync("kakaoToken");
-    const naverToken = await SecureStore.getItemAsync("naverToken");
-    if (kakaoToken || naverToken) {
-      const email = kakaoToken
-        ? await kakaoApi.getProfile()
-        : (await getProfile(naverToken)).response.email;
-      const res = await getUsers(email);
-      if (res !== 500) {
-        setUserId(res.data.id);
-        setUserEmail(email);
-        setIsLogIn(true);
+      if (kakaoToken || naverToken) {
+        const email = kakaoToken
+          ? await kakaoApi.getProfile()
+          : (await getProfile(naverToken)).response.email;
+
+        const res = await getUsers(email);
+        if (res !== 500) {
+          setUserId(res.data.id);
+          setUserEmail(email);
+          setIsLogIn(true);
+        }
       }
+    } catch (error) {
+      console.log(error);
+      logOut();
     }
   };
 

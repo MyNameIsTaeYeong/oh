@@ -57,3 +57,4 @@ dist/
 .env
 
 test.js
+envariable.js
