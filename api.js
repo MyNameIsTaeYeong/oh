@@ -1,12 +1,10 @@
 import axios from "axios";
-import { SERVER } from "./envariable";
+import { SERVER } from "@env";
 import * as SecureStore from "expo-secure-store";
 import kakaoApi from "./kakaoApi";
 import { NaverLogin } from "@react-native-seoul/naver-login";
 
-axios.defaults.baseURL = SERVER;
-
-console.log(SERVER);
+axios.defaults.baseURL = SERVER ? SERVER : process.env.SERVER;
 
 // POST /users : 유저 생성.
 export const postUsers = async (body) => {

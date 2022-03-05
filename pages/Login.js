@@ -14,7 +14,7 @@ import {
   NAVERURLSCHEME,
   NAVERANDROIDKEY,
   NAVERANDROIDSECRET,
-} from "../envariable";
+} from "@env";
 
 const Oh = styled.View`
   flex: 2;
@@ -63,15 +63,24 @@ const Login = ({ setIsLogIn }) => {
   const setUserEmail = useSetRecoilState(userEmailState);
 
   const iosKeys = {
-    kConsumerKey: NAVERIOSKEY,
-    kConsumerSecret: NAVERIOSSECRET,
+    kConsumerKey: NAVERIOSKEY ? NAVERIOSKEY : process.env.NAVERIOSKEY,
+    kConsumerSecret: NAVERIOSSECRET
+      ? NAVERIOSSECRET
+      : process.env.NAVERIOSSECRET,
+
     kServiceAppName: "oh",
-    kServiceAppUrlScheme: NAVERURLSCHEME,
+    kServiceAppUrlScheme: NAVERURLSCHEME
+      ? NAVERURLSCHEME
+      : process.env.NAVERURLSCHEME,
   };
 
   const androidKeys = {
-    kConsumerKey: NAVERANDROIDKEY,
-    kConsumerSecret: NAVERANDROIDSECRET,
+    kConsumerKey: NAVERANDROIDKEY
+      ? NAVERANDROIDKEY
+      : process.env.NAVERANDROIDKEY,
+    kConsumerSecret: NAVERANDROIDSECRET
+      ? NAVERANDROIDSECRET
+      : process.env.NAVERANDROIDSECRET,
     kServiceAppName: "oh",
   };
 
@@ -112,6 +121,7 @@ const Login = ({ setIsLogIn }) => {
 
     if (res !== 500) {
       setUserId(res.data.id);
+      setUserEmail(email);
       setIsLogIn(true);
     }
     if (res === 500) {
