@@ -27,3 +27,5 @@
 - 푸쉬알람
   - 날씨별 감정 알려주기
   - 날짜별 감정 알려주기
+
+Link : [PlayStore에서 다운로드하기](https://play.google.com/store/apps/details?id=com.oh)
