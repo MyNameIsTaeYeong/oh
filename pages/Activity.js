@@ -1,11 +1,24 @@
 import React, { useState } from "react";
-import ScreenContainer from "../components/ScreenContainer";
-import Flat from "../components/Flat";
 import DialogInput from "react-native-dialog-input";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activityState, userIdState } from "../state";
 import { logOut, postSomething } from "../api";
 import Btn from "../components/Btn";
+import styled from "styled-components/native";
+import { FlatList } from "react-native";
+import Card from "../components/Card";
+
+const Container = styled.View`
+  height: ${(props) => props.theme.height};
+  background-color: ${(props) => props.theme.bgColor};
+  opacity: ${(props) => props.theme.opacity};
+  align-items: center;
+  padding: 15px;
+`;
+
+const VSepa = styled.View`
+  height: 20px;
+`;
 
 const Activity = ({ setIsLogIn }) => {
   const [visible, setVisible] = useState(false);
@@ -35,8 +48,22 @@ const Activity = ({ setIsLogIn }) => {
   };
 
   return (
-    <ScreenContainer>
-      <Flat data={activities} from="Activity" setIsLogIn={setIsLogIn} />
+    <Container>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={activities}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <Card
+            name={item.name}
+            id={item.id}
+            from={"Activity"}
+            setIsLogIn={setIsLogIn}
+          />
+        )}
+        ItemSeparatorComponent={() => <VSepa />}
+      />
+
       <Btn title={"추가"} whatToDo={() => setVisible(true)} />
       <DialogInput
         isDialogVisible={visible}
@@ -50,7 +77,7 @@ const Activity = ({ setIsLogIn }) => {
           setVisible(false);
         }}
       />
-    </ScreenContainer>
+    </Container>
   );
 };
 

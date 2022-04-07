@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 const BtnContainer = styled.View`
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
 `;
 
 const AddBtn = styled.TouchableOpacity`

@@ -1,13 +1,24 @@
 import React, { useState } from "react";
-import ScreenContainer from "../components/ScreenContainer";
-import Flat from "../components/Flat";
-import { Alert } from "react-native";
+import { Alert, FlatList } from "react-native";
 import DialogInput from "react-native-dialog-input";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { emotionState, userIdState } from "../state";
 import { logOut, postSomething } from "../api";
 import styled from "styled-components/native";
 import Btn from "../components/Btn";
+import Card from "../components/Card";
+
+const Container = styled.View`
+  height: ${(props) => props.theme.height};
+  background-color: ${(props) => props.theme.bgColor};
+  opacity: ${(props) => props.theme.opacity};
+  align-items: center;
+  padding: 15px;
+`;
+
+const VSepa = styled.View`
+  height: 20px;
+`;
 
 const Emotion = ({ setIsLogIn }) => {
   const [visible, setVisible] = useState(false);
@@ -37,10 +48,22 @@ const Emotion = ({ setIsLogIn }) => {
   };
 
   return (
-    <ScreenContainer>
-      <Flat data={emotions} from="Emotion" setIsLogIn={setIsLogIn} />
+    <Container>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={emotions}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <Card
+            name={item.name}
+            id={item.id}
+            from={"Emotion"}
+            setIsLogIn={setIsLogIn}
+          />
+        )}
+        ItemSeparatorComponent={() => <VSepa />}
+      />
       <Btn title={"추가"} whatToDo={() => setVisible(true)} />
-
       <DialogInput
         isDialogVisible={visible}
         title={"감정"}
@@ -53,7 +76,7 @@ const Emotion = ({ setIsLogIn }) => {
           setVisible(false);
         }}
       />
-    </ScreenContainer>
+    </Container>
   );
 };
 

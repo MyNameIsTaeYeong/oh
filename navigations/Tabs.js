@@ -1,15 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../pages/Home";
-import Statistics from "../pages/Statistics";
+import Statistics from "../pages/Share";
 import Emotion from "../pages/Emotion";
 import Activity from "../pages/Activity";
-import {
-  Feather,
-  MaterialIcons,
-  MaterialCommunityIcons,
-  Entypo,
-} from "@expo/vector-icons";
+import { Feather, MaterialIcons, AntDesign, Entypo } from "@expo/vector-icons";
 import Etc from "../pages/Etc";
 
 const Tab = createBottomTabNavigator();
@@ -41,15 +36,11 @@ const Tabs = ({ setIsLogIn }) => {
         }}
       />
       <Tab.Screen
-        name="보기"
+        name="공유"
         component={Statistics}
         options={{
           tabBarIcon: () => (
-            <MaterialCommunityIcons
-              name="comment-question-outline"
-              size={24}
-              color="black"
-            />
+            <AntDesign name="sharealt" size={24} color="black" />
           ),
         }}
       />

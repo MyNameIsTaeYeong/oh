@@ -9,6 +9,8 @@ axios.defaults.baseURL = SERVER ? SERVER : process.env.SERVER;
 // POST /users : 유저 생성.
 export const postUsers = async (body) => {
   try {
+    console.log(body);
+    console.log(axios.defaults.baseURL);
     const res = await axios.post(`/users`, body);
 
     if (res.status === 200) {

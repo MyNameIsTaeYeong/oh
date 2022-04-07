@@ -1,10 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import Flat from "../components/Flat";
 import Loader from "../components/Loader";
-import ScreenContainer from "../components/ScreenContainer";
+import styled from "styled-components/native";
 import { activityState, emotionState, userIdState } from "../state";
 import { getSomething, logOut } from "../api";
+import Card from "../components/Card";
+import { FlatList } from "react-native";
+
+const Container = styled.View`
+  height: ${(props) => props.theme.height};
+  background-color: ${(props) => props.theme.bgColor};
+  opacity: ${(props) => props.theme.opacity};
+`;
+
+const FlatContainer = styled.View`
+  padding: 15px;
+  align-items: center;
+`;
+
+const Title = styled.Text`
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+const HSepa = styled.View`
+  width: 10px;
+`;
 
 const Home = ({ setIsLogIn }) => {
   const userId = useRecoilValue(userIdState);
@@ -33,22 +55,44 @@ const Home = ({ setIsLogIn }) => {
   return isLoading ? (
     <Loader />
   ) : (
-    <ScreenContainer>
-      <Flat
-        title={"감정 기록하기"}
-        data={emotions}
-        horizontal={true}
-        from={"homeEmo"}
-        setIsLogIn={setIsLogIn}
-      />
-      <Flat
-        title={"활동 기록하기"}
-        data={activities}
-        horizontal={true}
-        from={"homeAct"}
-        setIsLogIn={setIsLogIn}
-      />
-    </ScreenContainer>
+    <Container>
+      <FlatContainer>
+        <Title>{"감정 기록하기"}</Title>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          data={emotions}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Card
+              name={item.name}
+              id={item.id}
+              from={"homeEmo"}
+              setIsLogIn={setIsLogIn}
+            />
+          )}
+          ItemSeparatorComponent={() => <HSepa />}
+          horizontal={true}
+        />
+      </FlatContainer>
+      <FlatContainer>
+        <Title>{"활동 기록하기"}</Title>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          data={activities}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Card
+              name={item.name}
+              id={item.id}
+              from={"homeAct"}
+              setIsLogIn={setIsLogIn}
+            />
+          )}
+          ItemSeparatorComponent={() => <HSepa />}
+          horizontal={true}
+        />
+      </FlatContainer>
+    </Container>
   );
 };
 
