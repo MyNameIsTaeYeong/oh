@@ -36,8 +36,8 @@ const Emotion = ({ setIsLogIn }) => {
     } else {
       if (res.status === 200) {
         setEmotions([
-          ...emotions,
           { id: res.data.insertId, name: inputText, userId },
+          ...emotions,
         ]);
         setVisible(false);
       }

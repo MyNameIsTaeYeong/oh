@@ -19,3 +19,8 @@ export const activityState = atom({
   key: "activityState",
   default: [],
 });
+
+export const shareTagState = atom({
+  key: "shareTagState",
+  default: [],
+});

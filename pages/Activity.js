@@ -36,8 +36,8 @@ const Activity = ({ setIsLogIn }) => {
     } else {
       if (res.status === 200) {
         setActivities([
-          ...activities,
           { id: res.data.insertId, name: inputText, userId },
+          ...activities,
         ]);
         setVisible(false);
       }

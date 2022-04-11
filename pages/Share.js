@@ -1,21 +1,20 @@
-import React, { useState } from "react";
-import { Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import DialogInput from "react-native-dialog-input";
-import ScreenContainer from "../components/ScreenContainer";
-import { AntDesign } from "@expo/vector-icons";
 import Btn from "../components/Btn";
 import styled from "styled-components/native";
-
-const data = [
-  { content: "이럴때 ~ 이러하다 ~", like: 100, id: 0, userId: 10 },
-  { content: "이럴때 ~ 이러하다 ~", like: 100, id: 2, userId: 10 },
-  { content: "이럴때 ~ 이러하다 ~", like: 100, id: 3, userId: 10 },
-  { content: "이럴때 ~ 이러하다 ~", like: 100, id: 4, userId: 10 },
-  { content: "이럴때 ~ 이러하다 ~", like: 100, id: 5, userId: 10 },
-  { content: "이럴때 ~ 이러하다 ~", like: 100, id: 6, userId: 10 },
-  { content: "이럴때 ~ 이러하다 ~", like: 100, id: 7, userId: 10 },
-  { content: "이럴때 ~ 이러하다 ~", like: 100, id: 8, userId: 10 },
-];
+import { useRecoilState, useRecoilValue } from "recoil";
+import { shareTagState, userIdState } from "../state";
+import { getSomething, logOut, postSomething } from "../api";
+import Loader from "../components/Loader";
+import ShareTag from "../components/ShareTag";
 
 const Container = styled.View`
   height: ${(props) => props.theme.height};
@@ -28,25 +27,82 @@ const VSepa = styled.View`
   height: 20px;
 `;
 
-const Share = () => {
+const Share = ({ setIsLogIn }) => {
   const [visible, setVisible] = useState(false);
+  const [page, setPage] = useState(0);
+  const [shareTags, setShareTags] = useState([]);
+  const userId = useRecoilValue(userIdState);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getShareTags = async () => {
+    setIsLoading(true);
+    const res = await getSomething("sharetags", userId, { page });
+    if (res === "logOut") {
+      logOut();
+      setIsLogIn(false);
+    } else {
+      if (res.status === 200) {
+        setShareTags([...shareTags, ...res.data.results]);
+        setIsLoading(false);
+      } else {
+        Alert.alert("잠시 후 다시 시도해주세요.");
+      }
+    }
+  };
+
+  const postShareTags = async (content) => {
+    setIsLoading(true);
+    const res = await postSomething("sharetags", { content, userId });
+    if (res === "logOut") {
+      logOut();
+      setIsLogIn(false);
+    } else {
+      if (res.status === 200) {
+        setVisible(false);
+        setIsLoading(false);
+        setShareTags([
+          {
+            id: res.data.insertId,
+            content,
+            userId,
+            likeCnt: 0,
+          },
+          ...shareTags,
+        ]);
+
+        Alert.alert("등록 되었습니다!");
+      } else {
+        Alert.alert("잠시 후 다시 시도해주세요.");
+      }
+    }
+  };
+
+  const renderItem = ({ item }) => <ShareTag item={item} />;
+
+  const renderLoader = () => {
+    return isLoading ? <ActivityIndicator size="large" color="black" /> : null;
+  };
+
+  const getNextPage = () => {
+    setPage(page + 1);
+  };
+
+  useEffect(() => {
+    getShareTags();
+  }, [page]);
 
   return (
     <Container>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={data}
-        renderItem={({ item }) => (
-          <View>
-            <Text>{item.content}</Text>
-            <Text>{item.like}</Text>
-            <TouchableOpacity>
-              <AntDesign name="like2" size={24} color="black" />
-              <AntDesign name="like1" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
-        )}
+        data={shareTags}
+        keyExtractor={(item) => item.id}
+        onEndReached={getNextPage}
+        onEndReachedThreshold={0.5}
+        renderItem={renderItem}
+        windowSize={2}
         ItemSeparatorComponent={() => <VSepa />}
+        ListFooterComponent={renderLoader}
       />
       <Btn title={"공유하기"} whatToDo={() => setVisible(true)} />
       <DialogInput
@@ -54,8 +110,8 @@ const Share = () => {
         title={"공유"}
         message={`공유할 내용을 입력하세요.`}
         hintInput={"입력"}
-        submitInput={(inputText) => {
-          postActivities(inputText);
+        submitInput={(content) => {
+          postShareTags(content);
         }}
         closeDialog={() => {
           setVisible(false);

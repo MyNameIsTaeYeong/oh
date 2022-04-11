@@ -44,11 +44,13 @@ const Card = ({ name, id, from, setIsLogIn }) => {
       res = await postSomething("EmoOccurrences", {
         emotionName: name,
         userId,
+        recordId: id,
       });
     } else {
       res = await postSomething("ActOccurrences", {
         activityName: name,
         userId,
+        recordId: id,
       });
     }
     if (res === "logOut") {

@@ -6,6 +6,8 @@ const Container = styled.View`
   flex: 6;
   align-items: center;
   justify-content: center;
+  background-color: ${(props) => props.theme.bgColor};
+  opacity: 0.5;
 `;
 
 const Loader = () => {

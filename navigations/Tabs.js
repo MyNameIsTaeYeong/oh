@@ -37,7 +37,7 @@ const Tabs = ({ setIsLogIn }) => {
       />
       <Tab.Screen
         name="공유"
-        component={Statistics}
+        children={() => <Statistics setIsLogIn={setIsLogIn} />}
         options={{
           tabBarIcon: () => (
             <AntDesign name="sharealt" size={24} color="black" />

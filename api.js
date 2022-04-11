@@ -49,9 +49,11 @@ export const getUsers = async (email) => {
 };
 
 // resource에서 identifier에 해당하는 레코드 조회
-export const getSomething = async (resource, identifier) => {
+export const getSomething = async (resource, identifier, params) => {
   try {
-    const res = await axios.get(`/${resource}/${identifier}`);
+    const res = await axios.get(`/${resource}/${identifier}`, {
+      params,
+    });
 
     if (res.data.code === 403) {
       refreshToken = await SecureStore.getItemAsync("refreshToken");
