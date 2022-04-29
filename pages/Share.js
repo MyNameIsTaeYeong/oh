@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, Alert, FlatList } from "react-native";
 import DialogInput from "react-native-dialog-input";
 import Btn from "../components/Btn";
 import styled from "styled-components/native";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { shareTagState, userIdState } from "../state";
+import { useRecoilValue } from "recoil";
+import { userIdState } from "../state";
 import { getSomething, logOut, postSomething } from "../api";
-import Loader from "../components/Loader";
 import ShareTag from "../components/ShareTag";
 
 const Container = styled.View`
@@ -77,14 +69,18 @@ const Share = ({ setIsLogIn }) => {
     }
   };
 
-  const renderItem = ({ item }) => <ShareTag item={item} />;
+  const renderItem = ({ item }) => (
+    <ShareTag item={item} setIsLogIn={setIsLogIn} />
+  );
 
   const renderLoader = () => {
     return isLoading ? <ActivityIndicator size="large" color="black" /> : null;
   };
 
   const getNextPage = () => {
-    setPage(page + 1);
+    if (!isLoading) {
+      setPage(page + 1);
+    }
   };
 
   useEffect(() => {
@@ -98,7 +94,7 @@ const Share = ({ setIsLogIn }) => {
         data={shareTags}
         keyExtractor={(item) => item.id}
         onEndReached={getNextPage}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={0}
         renderItem={renderItem}
         windowSize={2}
         ItemSeparatorComponent={() => <VSepa />}

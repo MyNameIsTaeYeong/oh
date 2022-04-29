@@ -21,6 +21,7 @@ const CardName = styled.Text`
 `;
 
 const Card = ({ name, id, from, setIsLogIn }) => {
+  console.log(id);
   const navigation = useNavigation();
   const [waiting, setWaiting] = useState(false);
   const userId = useRecoilValue(userIdState);
@@ -77,4 +78,4 @@ const Card = ({ name, id, from, setIsLogIn }) => {
   );
 };
 
-export default Card;
+export default React.memo(Card);
